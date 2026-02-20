@@ -1,6 +1,6 @@
 #create public ip(s) - Assumes each ip configuration has a unique name
 resource "azurerm_public_ip" "virtualmachine_public_ips" {
-  for_each = { for key, values in local.nics_ip_configs : key => values if values.ipconfig.create_public_ip_address == true }
+  for_each = { for key, values in local.nics_ip_configs : key => values if try(values.ipconfig.create_public_ip_address, false) == true }
 
   allocation_method       = var.public_ip_configuration_details.allocation_method
   location                = var.location
